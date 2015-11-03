@@ -23,16 +23,19 @@ url_base = raw_input("URL do tópico: ")
 page = urllib.urlopen(url_base)
 n_pages = number_of_pages(page)
 
-i = 0
 for index in range(1, n_pages+1):
     url_now = url_base + "/page-" + str(index)
     page = urllib.urlopen(url_now)
     for line in page:
         if line.find('title="Permalink" class="datePermalink"') != -1:
-            #post_date = line.split('data-datestring="', 2)[1]
-            #print post_date
-            i+=1
-            print i
+            post_date = line.split('title="Permalink" class="datePermalink"', 2)[1]
+            if post_date.find('DateTime" title="') != -1:
+                post_date = post_date.split('DateTime" title="', 1)[1]
+                post_date = post_date.split("às", 1)[0]
+            else:
+                post_date = post_date.split('data-datestring="', 1)[1]
+                post_date = post_date.split('"', 1)[0]
+            print post_date
 
 
 page.close()
