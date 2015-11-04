@@ -1,8 +1,6 @@
 #/usr/bin/env python
 # -*- coding: utf-8 -*-
 import urllib
-import time
-import re
 import os
 
 def number_of_pages(page):
@@ -82,9 +80,25 @@ def sort_file(file_name):
     arq.close()
     fp.close()
 
+def generate_graph(nome_arq, title):
+	f = os.popen("gnuplot", "w")
+	print >> f, "set grid"
+	print >> f, "set datafile separator '\t'"
+	print >> f, "set term png size 1024, 768"
+	print >> f, "set output 'grafico_topico.png'"
+	print >> f, "set xdata time"
+	print >> f, "set timefmt '%d/%m/%Y'"
+	print >> f, "set format x '%d/%m/%Y'"
+	print >> f, "set xtics nomirror rotate by -270 scale 1"
+	print >> f, "set xlabel 'Data'"
+	print >> f, "set ylabel 'Posts'"
+	print >> f, "set title '"+title+"'"
+	print >> f, "plot 'sorted_dates.txt' using 1:2 with lines"
+	f.flush()
+
 #inicio
 url_base = raw_input("URL do tópico: ")
-#tpc_name = raw_input("Título do tópico: ")
+tpc_name = raw_input("Título do tópico: ")
 
 page = urllib.urlopen(url_base)
 n_pages = number_of_pages(page)
@@ -116,5 +130,6 @@ for w in dic_dates:
 arq.close()
 
 sort_file("unsorted_dates.txt")
+generate_graph("sorted_dates.txt", tpc_name)
 
 page.close()
