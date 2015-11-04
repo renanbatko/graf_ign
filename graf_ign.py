@@ -3,6 +3,7 @@
 import urllib
 import os
 
+#decobre o numero de paginas do topico
 def number_of_pages(page):
     c = 0
     for line in page:
@@ -14,6 +15,8 @@ def number_of_pages(page):
                 n_pages = int(n_pages)
                 return n_pages
 
+#converte a data do formato mes dia, ano para dia/mes/ano
+#exemplo: Outubro 26, 2015 ===> 26/10/2015
 def convert_date(text_date, dic_dates):
     months = {'Janeiro': 1, 'Fevereiro': 2, 'Março': 3, 'Abril': 4, 'Maio': 5,
     'Junho': 6, 'Julho': 7, 'Agosto': 8, 'Setembro': 9, 'Outubro': 10,
@@ -51,6 +54,7 @@ def compare_dates(data1, data2):
 					return 1
 	return 0
 
+#ordena as datas no arquivo
 def sort_file(file_name):
     arq = open(file_name, "r")
     dates = []
@@ -80,6 +84,7 @@ def sort_file(file_name):
     arq.close()
     fp.close()
 
+#gera o grafico
 def generate_graph(nome_arq, title):
 	f = os.popen("gnuplot", "w")
 	print >> f, "set grid"
